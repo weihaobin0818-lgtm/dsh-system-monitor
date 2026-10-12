@@ -43,6 +43,19 @@ if (/##\s+Requirements/.test(readme) === false) note('README has no Requirements
 for (const entry of pkg.files ?? []) {
   if (!existsSync(join(ROOT, entry))) block(`package.json "files" declares "${entry}", which does not exist`)
 }
+
+// The reverse direction, and the more dangerous one. `dsh.bundle.patch` names the
+// file the Loader reads to insert this bundle's row; if `files` omits it, npm
+// publishes a tarball that installs cleanly and then does nothing at all. A
+// working tree never reveals that — the file is sitting right there.
+const declaredFiles = new Set(pkg.files ?? [])
+for (const [value, label] of [[pkg.dsh?.bundle?.patch, 'dsh.bundle.patch'], [pkg.icon, 'icon']]) {
+  if (typeof value !== 'string') continue
+  const relative = value.replace(/^\.\//, '')
+  if (!declaredFiles.has(relative)) {
+    block(`package.json "files" omits "${relative}" (${label}) — the published package would not work`)
+  }
+}
 for (const [key, target] of Object.entries(pkg.exports ?? {})) {
   if (typeof target !== 'string') continue
   // A glob export may legitimately match nothing yet; a literal one may not.

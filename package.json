@@ -29,6 +29,7 @@
     "monitor.js",
     "metrics.js",
     "client.js",
+    "cordis.patch.yml",
     "icon.svg",
     "README.md"
   ],
@@ -47,7 +48,8 @@
   "scripts": {
     "test": "node test/run.mjs",
     "test:mutate": "node test/mutate.mjs",
-    "release:check": "node test/release.mjs"
+    "release:check": "node test/release.mjs",
+    "prepublishOnly": "node test/release.mjs"
   },
   "dsh": {
     "bundle": {
