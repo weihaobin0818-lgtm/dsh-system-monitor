@@ -4,6 +4,55 @@ A DSH bundle that puts a live hardware monitor in the Harness sidebar: **CPU, GP
 memory and disk** on one page, refreshed once a second, with a per-application
 breakdown — including each application's own icon — behind every gauge.
 
+---
+
+## 中文说明
+
+在 DSH 侧栏放一个实时硬件监控面板。**CPU、GPU、内存、磁盘**一页看完，每秒刷新，
+每个读数都能下钻到具体是哪个应用占的（带应用自己的图标）。
+
+### 它和任务管理器的区别
+
+任务管理器告诉你 CPU 是 80%，但不会告诉你**是谁**占的、**还会涨多久**、**什么时候会满**。
+这个插件把这三件事一起答了。
+
+### 平台要求
+
+| | |
+|---|---|
+| **系统** | **Windows 10 / 11 —— 完整功能需要** |
+| DSH | 带 Web 界面的 profile（`dsh web`） |
+| Node | 20 或更高（Harness 运行时已满足） |
+| 权限 | **不需要管理员**，全部读取当前用户自己会话内的数据 |
+
+**Linux 和 macOS 上仍可安装运行**，但会降级为 Node 原生读数：CPU、内存和根卷。
+GPU、按进程归因、图标、磁盘吞吐和电池都会报告为不可用 —— 对应的面板会**隐藏而不是显示为空**。
+
+### 主要功能
+
+- **概览** —— 三个环形仪表（CPU / 内存 / GPU）+ 趋势图 + 核心热力图 + 磁盘列表
+- **按应用归因** —— 点任意读数进入明细，看是哪些进程、占多少、可展开到单个进程
+- **预测** —— 磁盘写满时间、内存耗尽时间，基于实测斜率而不是线性外推
+- **告警** —— 超过阈值时弹提示、写入告警历史、侧栏图标显示徽标
+- **导出** —— CSV / JSON / NDJSON，走系统「另存为」对话框，可自选目录和文件名
+- **历史** —— 滚动写 NDJSON 到磁盘，默认保留 7 天，上限一年
+- **自定义时间范围** —— 预设 1 / 5 / 30 分钟，也可输入任意分钟数（最多 3 小时，即内存保留上限）
+
+### 安装
+
+```bash
+dsh plugin install dsh-system-monitor
+```
+
+或者开发时用 `link:` 指向本地目录，详见下方 [Installing it](#installing-it)。
+
+### 关于本文档
+
+以下正文为英文。中文只覆盖到这里 —— 接口、配置项和实现细节请往下读。
+配置项的含义在 [Configuration](#configuration) 一节，每个都有说明。
+
+---
+
 ## Requirements
 
 | | |
