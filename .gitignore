@@ -1,0 +1,23 @@
+# Dependencies, if this is ever installed rather than linked
+node_modules/
+
+# Editor and OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local experiments. The suite lives in test/ and is committed; anything a
+# debugging session leaves behind is not.
+.probe/
+*.bak
+*.log
+*.tsbuildinfo
+
+# npm
+*.tgz
+npm-debug.log*
+
+# The plugin's own runtime state, if it is ever pointed at the repo
+.dsh-system-monitor/

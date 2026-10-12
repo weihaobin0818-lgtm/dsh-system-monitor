@@ -1,0 +1,6 @@
+- insert:
+    # Row id must not collide with a previously loaded entry: the Loader does not
+    # re-apply an `insert` whose id it already knows, so a stale row would keep
+    # pointing at the old module name after a rename.
+    - id: dsh-system-monitor
+      name: dsh-system-monitor

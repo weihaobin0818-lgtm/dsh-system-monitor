@@ -1,0 +1,65 @@
+{
+  "name": "dsh-system-monitor",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Real-time CPU, GPU, memory, disk and battery monitoring panel in the DSH sidebar, with per-application attribution, forecasts and exports",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "monitor",
+    "system-monitor",
+    "cpu",
+    "memory",
+    "gpu",
+    "windows"
+  ],
+  "license": "MIT",
+  "author": "weihaobin0818-lgtm",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weihaobin0818-lgtm/dsh-system-monitor.git"
+  },
+  "homepage": "https://github.com/weihaobin0818-lgtm/dsh-system-monitor#readme",
+  "bugs": {
+    "url": "https://github.com/weihaobin0818-lgtm/dsh-system-monitor/issues"
+  },
+  "icon": "./icon.svg",
+  "files": [
+    "LICENSE",
+    "monitor.js",
+    "metrics.js",
+    "client.js",
+    "icon.svg",
+    "README.md"
+  ],
+  "meta": {
+    "title": "系统监控",
+    "description": "在左侧栏实时查看 CPU、GPU、内存与磁盘状态"
+  },
+  "exports": {
+    ".": "./monitor.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/run.mjs",
+    "test:mutate": "node test/mutate.mjs",
+    "release:check": "node test/release.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  }
+}
