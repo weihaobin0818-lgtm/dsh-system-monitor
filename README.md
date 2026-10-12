@@ -1,17 +1,82 @@
 # dsh-system-monitor
 
-A DSH bundle that puts a live hardware monitor in the Harness sidebar: CPU, GPU, memory and disk on one page, refreshed once a second, with a per-application breakdown — including each application's own icon — behind every gauge, supporting data export in CSV, JSON and NDJSON formats.
+<p align="center">
+  <strong>DSH 侧栏实时硬件监控 —— CPU、GPU、内存、磁盘一页看完，每个读数都能下钻到具体应用。</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/weihaobin0818-lgtm/dsh-system-monitor/stargazers"><img src="https://img.shields.io/github/stars/weihaobin0818-lgtm/dsh-system-monitor?style=flat&label=%E2%98%85&color=08C" alt="GitHub stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2EA44F?style=flat" alt="MIT License"></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/Node-%E2%89%A520-339933?style=flat&logo=nodedotjs&logoColor=white" alt="Node 20 or newer"></a>
+  <img src="https://img.shields.io/badge/Windows%2010%20%7C%2011-0078D4?style=flat&logo=windows&logoColor=white" alt="Windows 10 and 11">
+  <img src="https://img.shields.io/badge/dependencies-0-2EA44F?style=flat" alt="Zero runtime dependencies">
+</p>
+
+<p align="center">
+  <sub>独立的社区开源插件，与深度求索不存在隶属、合作、授权或背书关系。</sub>
+</p>
+
+<!-- 截图占位：放一张 1600px 宽的概览页截图，门面效果会好很多。有图后把这段注释符号去掉。
+<p align="center">
+  <img src="assets/overview.png" alt="DSH 系统监控面板概览" width="100%">
+</p>
+-->
 
 ---
 
 在 DSH 侧栏放置实时硬件监控面板：**CPU、GPU、内存、磁盘**信息集中在同一页面展示，每秒自动刷新；每项指标均可下钻查看占用来源，附带对应应用原生图标，展示各应用资源占用明细，支持数据导出为 CSV、JSON、NDJSON 格式。
 
-### 它和任务管理器的区别
+## 它和任务管理器的区别
 
 任务管理器仅展示瞬时 CPU 占用（例如 80%），无法定位**资源占用主体**、预估**负载持续时长**、预判**资源耗尽时间**。
-本方案为 IDE 插件，无需启动独立程序，在侧栏提供可视化硬件监控面板，同步完成这三项分析。
+本插件为 DSH 侧栏插件，无需启动独立程序，在侧栏提供可视化硬件监控面板，同步完成这三项分析。
 
-### 平台要求
+## 主要功能
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>一页看完</h3>
+      <p>CPU、GPU、内存、磁盘四个环形仪表，加趋势图、核心热力图和磁盘列表，每秒刷新一次。支持<strong>舒适</strong>与<strong>紧凑</strong>两种密度，小屏也能一屏看完。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>按应用归因</h3>
+      <p>点任意读数进入明细，看到的不是一堆 PID，而是<strong>按应用分组</strong>的列表 —— 带应用自己的图标。可展开到单个进程，也可按占用、按增长、按磁盘三种方式排序。</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>预测</h3>
+      <p>基于实测斜率预测磁盘写满时间与内存耗尽时间 —— 不是线性外推，会考虑采样窗口内的实际变化速率；斜率不够显著时<strong>宁可不报</strong>。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>告警</h3>
+      <p>超过阈值时弹出提示、写入告警历史、侧栏图标显示徽标。阈值可配，告警需持续一段时间才触发，避免瞬时抖动误报。</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>导出</h3>
+      <p>CSV / JSON / NDJSON 三种格式，走系统<strong>「另存为」对话框</strong>，可自选文件夹、改文件名。NDJSON 是推荐的记录格式：追加不重写旧行，加字段不让旧数据失效。</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>落盘历史</h3>
+      <p>滚动写 NDJSON 到磁盘，每天一个文件，默认保留 7 天、上限一年。30 秒批量落盘 —— 直写是每天 8.6 万次文件追加，对没人盯着的监控太浪费。</p>
+    </td>
+  </tr>
+</table>
+
+功能清单：
+
+- **概览** —— 三个环形仪表（CPU / 内存 / GPU）+ 趋势图 + 核心热力图 + 磁盘列表
+- **按应用归因** —— 点任意读数进入明细，看是哪些进程、占多少、可展开到单个进程
+- **预测** —— 磁盘写满时间、内存耗尽时间，基于实测斜率而不是线性外推
+- **告警** —— 超过阈值时弹提示、写入告警历史、侧栏图标显示徽标
+- **导出** —— CSV / JSON / NDJSON，走系统「另存为」对话框，可自选目录和文件名
+- **历史** —— 滚动写 NDJSON 到磁盘，默认保留 7 天，上限一年
+- **自定义时间范围** —— 预设 1 / 5 / 30 分钟，也可输入任意分钟数（最多 3 小时，即内存保留上限）
+
+## 平台要求
 
 | | |
 |---|---|
@@ -23,17 +88,7 @@ A DSH bundle that puts a live hardware monitor in the Harness sidebar: CPU, GPU,
 **Linux 和 macOS 上仍可安装运行**，但会降级为 Node 原生读数：CPU、内存和根卷。
 GPU、按进程归因、图标、磁盘吞吐都会报告为不可用 —— 对应的面板会**隐藏而不是显示为空**。
 
-### 主要功能
-
-- **概览** —— 三个环形仪表（CPU / 内存 / GPU）+ 趋势图 + 核心热力图 + 磁盘列表
-- **按应用归因** —— 点任意读数进入明细，看是哪些进程、占多少、可展开到单个进程
-- **预测** —— 磁盘写满时间、内存耗尽时间，基于实测斜率而不是线性外推
-- **告警** —— 超过阈值时弹提示、写入告警历史、侧栏图标显示徽标
-- **导出** —— CSV / JSON / NDJSON，走系统「另存为」对话框，可自选目录和文件名
-- **历史** —— 滚动写 NDJSON 到磁盘，默认保留 7 天，上限一年
-- **自定义时间范围** —— 预设 1 / 5 / 30 分钟，也可输入任意分钟数（最多 3 小时，即内存保留上限）
-
-### 安装
+## 安装
 
 ```bash
 dsh plugin install dsh-system-monitor
@@ -41,12 +96,40 @@ dsh plugin install dsh-system-monitor
 
 或者开发时用 `link:` 指向本地目录，详见下方 [Installing it](#installing-it)。
 
-### 关于本文档
+**不装驱动、不常驻服务、不联网**，也不需要管理员权限。
+
+## 质量
+
+这个项目自带测试，而且测试**被验证过会失败**：
+
+| | |
+|---|---|
+| 断言 | **197 条**，全部通过 |
+| 变异测试 | **15 个**，全部被捕获 |
+| 运行时依赖 | **0 个** —— 只用 Node 和系统自带的 PowerShell |
+
+变异测试的含义是：故意往代码里注入 15 个 bug，如果测试没抓住任何一个，说明那条测试是假的。**能全抓住，才说明这些断言真的会失败。**
+
+```bash
+npm test              # 197 条断言
+npm run test:mutate   # 15 个变异，验证测试本身
+npm run release:check # 发布前检查：协议、版权、包内容、隐私信息
+```
+
+## 关于本文档
 
 以下正文为英文。中文只覆盖到这里 —— 接口、配置项和实现细节请往下读。
 配置项的含义在 [Configuration](#configuration) 一节，每个都有说明。
 
 ---
+
+<a id="english"></a>
+
+## English
+
+A DSH bundle that puts a live hardware monitor in the Harness sidebar: CPU, GPU, memory and disk on one page, refreshed once a second, with a per-application breakdown — including each application's own icon — behind every gauge, supporting data export in CSV, JSON and NDJSON formats.
+
+> A community plugin. Not affiliated with, endorsed by, or connected to DeepSeek.
 
 ## Requirements
 
