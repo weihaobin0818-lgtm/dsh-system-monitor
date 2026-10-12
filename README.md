@@ -1,20 +1,15 @@
 # dsh-system-monitor
 
-A DSH bundle that puts a live hardware monitor in the Harness sidebar: **CPU, GPU,
-memory and disk** on one page, refreshed once a second, with a per-application
-breakdown — including each application's own icon — behind every gauge.
+A DSH bundle that puts a live hardware monitor in the Harness sidebar: CPU, GPU, memory and disk on one page, refreshed once a second, with a per-application breakdown — including each application's own icon — behind every gauge, supporting data export in CSV, JSON and NDJSON formats.
 
 ---
 
-## 中文说明
-
-在 DSH 侧栏放一个实时硬件监控面板。**CPU、GPU、内存、磁盘**一页看完，每秒刷新，
-每个读数都能下钻到具体是哪个应用占的（带应用自己的图标）。
+在 DSH 侧栏放置实时硬件监控面板：**CPU、GPU、内存、磁盘**信息集中在同一页面展示，每秒自动刷新；每项指标均可下钻查看占用来源，附带对应应用原生图标，展示各应用资源占用明细，支持数据导出为 CSV、JSON、NDJSON 格式。
 
 ### 它和任务管理器的区别
 
-任务管理器告诉你 CPU 是 80%，但不会告诉你**是谁**占的、**还会涨多久**、**什么时候会满**。
-这个插件把这三件事一起答了。
+任务管理器仅展示瞬时 CPU 占用（例如 80%），无法定位**资源占用主体**、预估**负载持续时长**、预判**资源耗尽时间**。
+本方案为 IDE 插件，无需启动独立程序，在侧栏提供可视化硬件监控面板，同步完成这三项分析。
 
 ### 平台要求
 
@@ -26,7 +21,7 @@ breakdown — including each application's own icon — behind every gauge.
 | 权限 | **不需要管理员**，全部读取当前用户自己会话内的数据 |
 
 **Linux 和 macOS 上仍可安装运行**，但会降级为 Node 原生读数：CPU、内存和根卷。
-GPU、按进程归因、图标、磁盘吞吐和电池都会报告为不可用 —— 对应的面板会**隐藏而不是显示为空**。
+GPU、按进程归因、图标、磁盘吞吐都会报告为不可用 —— 对应的面板会**隐藏而不是显示为空**。
 
 ### 主要功能
 
